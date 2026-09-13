@@ -217,4 +217,7 @@ export interface RenderContext {
   // Auth method + account for the current login (see auth.ts). Only populated
   // when display.showAuth or display.showAuthUser is enabled.
   authInfo?: AuthInfo | null;
+  // This session's peer-messaging name (see session-registry.ts). Only
+  // populated when display.showSessionAddress is enabled.
+  sessionAddress?: string | null;
 }

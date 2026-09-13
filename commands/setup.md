@@ -668,6 +668,7 @@ Use AskUserQuestion:
 | Agents & Todos | `display.showAgents: true, display.showTodos: true` |
 | Session info | `display.showDuration: true, display.showConfigCounts: true` |
 | Session name | `display.showSessionName: true` |
+| Session address | `display.showSessionAddress: true` |
 | Custom line | `display.customLine: "<user's text>"` — ask user for the text (max 80 chars) |
 
 Merge with existing config if the file already exists. Only write keys the user selected — don't write `false` for unselected items (defaults handle that).

@@ -147,6 +147,12 @@ export function renderSessionLine(ctx: RenderContext): string {
     push(label(ctx.transcript.sessionName, colors), 'sessionName');
   }
 
+  // Peer-messaging name: the address another session sends to. Distinct from
+  // the session name above, which is only a human label for this session.
+  if (display?.showSessionAddress && ctx.sessionAddress) {
+    push(label(`🔗 ${ctx.sessionAddress}`, colors), 'sessionAddress');
+  }
+
   if (display?.showClaudeCodeVersion && ctx.claudeCodeVersion) {
     push(label(`CC v${ctx.claudeCodeVersion}`, colors), 'version');
   }

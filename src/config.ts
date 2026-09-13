@@ -76,6 +76,7 @@ export type HudElement =
  *   project:     project path + added dirs + git status (kept as one segment)
  *   advisor:     advisor model label
  *   sessionName: session title from /rename
+ *   sessionAddress: peer-messaging name other sessions send to
  *   version:     Claude Code version
  *   extra:       extra-cmd custom label
  *   duration:    session duration
@@ -88,6 +89,7 @@ export type FirstLineSegment =
   | 'project'
   | 'advisor'
   | 'sessionName'
+  | 'sessionAddress'
   | 'version'
   | 'extra'
   | 'duration'
@@ -150,6 +152,7 @@ const PROJECT_LINE_SEGMENTS: FirstLineSegment[] = [
   'project',
   'advisor',
   'sessionName',
+  'sessionAddress',
   'version',
   'extra',
   'duration',
@@ -222,6 +225,9 @@ export interface HudConfig {
     showAgents: boolean;
     showTodos: boolean;
     showSessionName: boolean;
+    // Show this session's peer-messaging name — the address other sessions
+    // reach it at — resolved from the session registry. Default off.
+    showSessionAddress: boolean;
     // Show the auth method (subscription plan) for the current login,
     // e.g. "Claude Max 20x", as its own segment at the end of the first line.
     showAuth: boolean;
@@ -345,6 +351,7 @@ export const DEFAULT_CONFIG: HudConfig = {
     showAgents: false,
     showTodos: false,
     showSessionName: false,
+    showSessionAddress: false,
     showAuth: false,
     showAuthUser: false,
     authUserLength: 8,
@@ -863,6 +870,9 @@ export function mergeConfig(userConfig: Partial<HudConfig>): HudConfig {
     showSessionName: typeof migrated.display?.showSessionName === 'boolean'
       ? migrated.display.showSessionName
       : DEFAULT_CONFIG.display.showSessionName,
+    showSessionAddress: typeof migrated.display?.showSessionAddress === 'boolean'
+      ? migrated.display.showSessionAddress
+      : DEFAULT_CONFIG.display.showSessionAddress,
     showAuth: typeof migrated.display?.showAuth === 'boolean'
       ? migrated.display.showAuth
       : DEFAULT_CONFIG.display.showAuth,

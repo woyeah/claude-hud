@@ -5,6 +5,7 @@ All notable changes to Claude HUD will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- `display.showSessionAddress` option to show this session's peer-messaging name (e.g. `🔗 my-project-4b`) — the address other sessions send to — resolved from the session registry in `{CLAUDE_CONFIG_DIR}/sessions/`.
 - `display.showDailyCost` option to show today's cumulative spend across sessions (`Today $12.34`), accumulated from the native stdin `cost.total_cost_usd` into a per-day ledger that resets at local midnight (#695).
 
 ### Fixed
