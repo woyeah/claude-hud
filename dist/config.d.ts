@@ -44,6 +44,7 @@ export type HudElement = 'project' | 'addedDirs' | 'context' | 'usage' | 'prompt
  *   project:     project path + added dirs + git status (kept as one segment)
  *   advisor:     advisor model label
  *   sessionName: session title from /rename
+ *   sessionAddress: peer-messaging name other sessions send to
  *   version:     Claude Code version
  *   extra:       extra-cmd custom label
  *   duration:    session duration
@@ -51,7 +52,7 @@ export type HudElement = 'project' | 'addedDirs' | 'context' | 'usage' | 'prompt
  *   speed:       output speed
  *   auth:        auth method / account
  */
-export type FirstLineSegment = 'model' | 'project' | 'advisor' | 'sessionName' | 'version' | 'extra' | 'duration' | 'cost' | 'speed' | 'auth';
+export type FirstLineSegment = 'model' | 'project' | 'advisor' | 'sessionName' | 'sessionAddress' | 'version' | 'extra' | 'duration' | 'cost' | 'speed' | 'auth';
 export type AddedDirsLayout = 'inline' | 'line';
 export type HudColorName = 'dim' | 'red' | 'green' | 'yellow' | 'magenta' | 'cyan' | 'brightBlue' | 'brightMagenta';
 /** A color value: named preset, 256-color index (0-255), or hex string (#rrggbb). */
@@ -125,6 +126,7 @@ export interface HudConfig {
         showAgents: boolean;
         showTodos: boolean;
         showSessionName: boolean;
+        showSessionAddress: boolean;
         showAuth: boolean;
         showAuthUser: boolean;
         authUserLength: number;

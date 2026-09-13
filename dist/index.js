@@ -9,6 +9,7 @@ import { parseExtraCmdArg, runExtraCmd } from "./extra-cmd.js";
 import { getClaudeCodeVersion } from "./version.js";
 import { getMemoryUsage } from "./memory.js";
 import { readAuthInfo } from "./auth.js";
+import { readSessionAddress } from "./session-registry.js";
 import { resolveEffortLevel } from "./effort.js";
 import { applyContextWindowFallback } from "./context-cache.js";
 import { getUsageFromExternalSnapshot, writeExternalUsageSnapshot } from "./external-usage.js";
@@ -69,6 +70,7 @@ export async function main(overrides = {}) {
         getClaudeCodeVersion,
         getMemoryUsage,
         readAuthInfo,
+        readSessionAddress,
         applyContextWindowFallback,
         render,
         now: () => Date.now(),
@@ -151,6 +153,9 @@ export async function main(overrides = {}) {
         const authInfo = config.display.showAuth || config.display.showAuthUser
             ? deps.readAuthInfo()
             : null;
+        const sessionAddress = config.display.showSessionAddress
+            ? deps.readSessionAddress(stdin.session_id)
+            : null;
         const ctx = {
             stdin,
             transcript,
@@ -169,6 +174,7 @@ export async function main(overrides = {}) {
             effortLevel: effortInfo?.level,
             effortSymbol: effortInfo?.symbol,
             authInfo,
+            sessionAddress,
         };
         deps.render(ctx);
     }

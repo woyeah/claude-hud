@@ -177,5 +177,6 @@ export interface RenderContext {
     effortLevel?: string;
     effortSymbol?: string;
     authInfo?: AuthInfo | null;
+    sessionAddress?: string | null;
 }
 //# sourceMappingURL=types.d.ts.map

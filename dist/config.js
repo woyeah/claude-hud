@@ -32,6 +32,7 @@ const PROJECT_LINE_SEGMENTS = [
     'project',
     'advisor',
     'sessionName',
+    'sessionAddress',
     'version',
     'extra',
     'duration',
@@ -95,6 +96,7 @@ export const DEFAULT_CONFIG = {
         showAgents: false,
         showTodos: false,
         showSessionName: false,
+        showSessionAddress: false,
         showAuth: false,
         showAuthUser: false,
         authUserLength: 8,
@@ -546,6 +548,9 @@ export function mergeConfig(userConfig) {
         showSessionName: typeof migrated.display?.showSessionName === 'boolean'
             ? migrated.display.showSessionName
             : DEFAULT_CONFIG.display.showSessionName,
+        showSessionAddress: typeof migrated.display?.showSessionAddress === 'boolean'
+            ? migrated.display.showSessionAddress
+            : DEFAULT_CONFIG.display.showSessionAddress,
         showAuth: typeof migrated.display?.showAuth === 'boolean'
             ? migrated.display.showAuth
             : DEFAULT_CONFIG.display.showAuth,
