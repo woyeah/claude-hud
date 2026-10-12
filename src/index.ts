@@ -13,6 +13,7 @@ import { readSessionAddress } from "./session-registry.js";
 import { resolveEffortLevel } from "./effort.js";
 import { applyContextWindowFallback } from "./context-cache.js";
 import { getUsageFromExternalSnapshot, writeExternalUsageSnapshot } from "./external-usage.js";
+import { withLastKnownUsage } from "./usage-cache.js";
 import { setLanguage, t } from "./i18n/index.js";
 import type { RenderContext } from "./types.js";
 import type { GitStatus } from "./git.js";
@@ -27,6 +28,7 @@ export type MainDeps = {
   getUsageFromStdin: typeof getUsageFromStdin;
   getUsageFromExternalSnapshot: typeof getUsageFromExternalSnapshot;
   writeExternalUsageSnapshot: typeof writeExternalUsageSnapshot;
+  withLastKnownUsage: typeof withLastKnownUsage;
   parseTranscript: typeof parseTranscript;
   countConfigs: typeof countConfigs;
   getGitStatus: typeof getGitStatus;
@@ -92,6 +94,7 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
     getUsageFromStdin,
     getUsageFromExternalSnapshot,
     writeExternalUsageSnapshot,
+    withLastKnownUsage,
     parseTranscript,
     countConfigs,
     getGitStatus,
@@ -153,7 +156,12 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
     }
 
     if (shouldReadUsage) {
-      usageData = stdinUsage;
+      // Claude Code does not send both rate-limit windows on every refresh; the last
+      // values it did send keep the usage line from flipping between 5h and Weekly.
+      // Only real sessions (ones with a transcript) read or write that cache.
+      usageData = stdin.transcript_path?.trim()
+        ? deps.withLastKnownUsage(stdinUsage, deps.now())
+        : stdinUsage;
       if (!usageData) {
         usageData = deps.getUsageFromExternalSnapshot(config, deps.now());
       } else if (config.display.externalUsagePath) {

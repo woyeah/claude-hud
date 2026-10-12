@@ -924,3 +924,71 @@ test("main uses a scoped-only external snapshot when stdin has no rate limits", 
 
   assert.deepEqual(renderedContext?.usageData, scopedOnly);
 });
+
+test("main fills the usage windows from the last known values for real sessions", async () => {
+  let renderedContext;
+  const calls = [];
+
+  await main({
+    readStdin: async () => makeStdin({
+      transcript_path: "/tmp/session.jsonl",
+      rate_limits: {
+        seven_day: { used_percentage: 41, resets_at: 1710600000 },
+      },
+    }),
+    parseTranscript: async () => makeTranscript(),
+    countConfigs: async () => makeCounts(),
+    loadConfig: async () => makeConfig(),
+    getGitStatus: async () => null,
+    now: () => 1_700_000_000_000,
+    withLastKnownUsage: (usage, now) => {
+      calls.push({ usage, now });
+      return { ...usage, fiveHour: 25, fiveHourResetAt: new Date(1710000000 * 1000) };
+    },
+    render: (ctx) => {
+      renderedContext = ctx;
+    },
+  });
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].now, 1_700_000_000_000);
+  assert.deepEqual(calls[0].usage, {
+    fiveHour: null,
+    sevenDay: 41,
+    fiveHourResetAt: null,
+    sevenDayResetAt: new Date(1710600000 * 1000),
+  });
+  assert.deepEqual(renderedContext?.usageData, {
+    fiveHour: 25,
+    sevenDay: 41,
+    fiveHourResetAt: new Date(1710000000 * 1000),
+    sevenDayResetAt: new Date(1710600000 * 1000),
+  });
+});
+
+test("main leaves the usage cache alone when stdin has no transcript", async () => {
+  let renderedContext;
+  let calls = 0;
+
+  await main({
+    readStdin: async () => makeStdin({
+      rate_limits: {
+        seven_day: { used_percentage: 41, resets_at: 1710600000 },
+      },
+    }),
+    parseTranscript: async () => makeTranscript(),
+    countConfigs: async () => makeCounts(),
+    loadConfig: async () => makeConfig(),
+    getGitStatus: async () => null,
+    withLastKnownUsage: () => {
+      calls += 1;
+      return null;
+    },
+    render: (ctx) => {
+      renderedContext = ctx;
+    },
+  });
+
+  assert.equal(calls, 0);
+  assert.equal(renderedContext?.usageData?.sevenDay, 41);
+});

@@ -311,7 +311,7 @@ Set `display.externalUsageWritePath` if you want ClaudeHUD to write the official
 
 Free/weekly-only accounts render the weekly window by itself instead of showing a ghost `5h: --` placeholder.
 
-The 7-day percentage appears when above the `display.sevenDayThreshold` (default 80%):
+The 7-day percentage appears when above the `display.sevenDayThreshold` (default 80%). A refresh that carries only one of the two windows keeps the other at the last value Claude Code sent, until that window resets, so the line doesn't flip between `5h` and `Weekly`:
 
 ```
 Context █████░░░░░ 45% │ Usage ██░░░░░░░░ 25% (1h 30m / 5h) | ██████████ 85% (2d / 7d)
