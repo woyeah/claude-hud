@@ -8,6 +8,7 @@ All notable changes to Claude HUD will be documented in this file.
 - `display.showSessionAddress` option to show this session's peer-messaging name (e.g. `🔗 my-project-4b`), the address other sessions send to, resolved from the session registry in `{CLAUDE_CONFIG_DIR}/sessions/`.
 
 ### Fixed
+- The usage line no longer flips between `5h` and `Weekly` when a refresh carries only one of the two rate-limit windows: the window stdin left out keeps the last value stdin sent until it resets.
 - A folder name containing ` │ ` no longer leaves the project link open over the rest of the HUD when line 1 wraps.
 
 ## [0.10.0] - 2026-10-01
