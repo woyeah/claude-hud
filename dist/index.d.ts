@@ -12,6 +12,7 @@ import { readAuthInfo } from "./auth.js";
 import { readSessionAddress } from "./session-registry.js";
 import { applyContextWindowFallback } from "./context-cache.js";
 import { getUsageFromExternalSnapshot, writeExternalUsageSnapshot } from "./external-usage.js";
+import { withLastKnownUsage } from "./usage-cache.js";
 import type { GitStatus } from "./git.js";
 import type { HudConfig } from "./config.js";
 export { getUsageFromExternalSnapshot, writeExternalUsageSnapshot } from "./external-usage.js";
@@ -20,6 +21,7 @@ export type MainDeps = {
     getUsageFromStdin: typeof getUsageFromStdin;
     getUsageFromExternalSnapshot: typeof getUsageFromExternalSnapshot;
     writeExternalUsageSnapshot: typeof writeExternalUsageSnapshot;
+    withLastKnownUsage: typeof withLastKnownUsage;
     parseTranscript: typeof parseTranscript;
     countConfigs: typeof countConfigs;
     getGitStatus: typeof getGitStatus;
