@@ -13,7 +13,7 @@ declare const CUSTOM_LINE_POSITIONS: readonly ['first', 'last'];
 declare const ADDED_DIRS_LAYOUTS: readonly ['inline', 'line'];
 declare const COLOR_NAMES: readonly ['dim', 'red', 'green', 'yellow', 'magenta', 'cyan', 'brightBlue', 'brightMagenta'];
 declare const ELEMENTS: readonly ['project', 'addedDirs', 'context', 'usage', 'promptCache', 'cacheHitRate', 'memory', 'environment', 'tools', 'skills', 'mcp', 'agents', 'todos', 'sessionTime'];
-declare const FIRST_LINE_SEGMENTS: readonly ['model', 'project', 'advisor', 'sessionName', 'version', 'extra', 'duration', 'cost', 'speed', 'auth'];
+declare const FIRST_LINE_SEGMENTS: readonly ['model', 'project', 'advisor', 'sessionName', 'sessionAddress', 'version', 'extra', 'duration', 'cost', 'speed', 'auth'];
 export type LineLayoutType = typeof LINE_LAYOUTS[number];
 export type PathLevels = typeof PATH_LEVELS[number];
 export type ContextValueMode = typeof CONTEXT_VALUE_MODES[number];
@@ -103,6 +103,7 @@ export interface HudConfig {
         showAgents: boolean;
         showTodos: boolean;
         showSessionName: boolean;
+        showSessionAddress: boolean;
         showAuth: boolean;
         showAuthUser: boolean;
         authUserLength: number;

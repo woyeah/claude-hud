@@ -16,6 +16,8 @@ export declare function addedDirs(f: Frame, prefix: string, joiner: string): str
 export declare function projectParts(f: Frame, layout: Layout): string[];
 export declare function advisorPart(f: Frame): string | null;
 export declare function sessionNamePart(f: Frame): string | null;
+/** `🔗 my-project-4b`: the address another session sends to, unlike the session name above. */
+export declare function sessionAddressPart(f: Frame): string | null;
 export declare function versionPart(f: Frame): string | null;
 export declare function durationPart(f: Frame): string | null;
 export declare function extraPart(f: Frame): string | null;

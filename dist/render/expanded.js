@@ -4,7 +4,7 @@ import { separatorLine, visibleWidth } from './ansi.js';
 import { contextLine } from './context.js';
 import { addedDirsLine, cacheHitRateLine, environmentLine, memoryLine, promptCacheLine, sessionTimeLine } from './lines.js';
 import { orderParts } from './order.js';
-import { advisorPart, authPart, compactionsPart, costPart, customLinePart, durationPart, extraPart, modelBadge, projectParts, sessionNamePart, sessionTokensSummary, speedPart, versionPart, } from './parts.js';
+import { advisorPart, authPart, compactionsPart, costPart, customLinePart, durationPart, extraPart, modelBadge, projectParts, sessionAddressPart, sessionNamePart, sessionTokensSummary, speedPart, versionPart, } from './parts.js';
 import { usageParts } from './usage.js';
 import { gitFilesLine } from './vcs.js';
 import { t } from '../i18n/index.js';
@@ -23,6 +23,7 @@ function projectLine(f) {
         add(part, 'project');
     add(advisorPart(f), 'advisor');
     add(sessionNamePart(f), 'sessionName');
+    add(sessionAddressPart(f), 'sessionAddress');
     add(versionPart(f), 'version');
     add(extraPart(f), 'extra');
     add(durationPart(f), 'duration');

@@ -122,6 +122,10 @@ const labeled = (f, text) => (text ? label(text, f.config?.colors) : null);
 export function sessionNamePart(f) {
     return f.config?.display?.showSessionName ? labeled(f, sessionName(f)) : null;
 }
+/** `🔗 my-project-4b`: the address another session sends to, unlike the session name above. */
+export function sessionAddressPart(f) {
+    return f.config?.display?.showSessionAddress ? labeled(f, f.sessionAddress && `🔗 ${f.sessionAddress}`) : null;
+}
 export function versionPart(f) {
     const version = f.config?.display?.showClaudeCodeVersion ? claudeCodeVersion(f) : undefined;
     return labeled(f, version && `CC v${version}`);

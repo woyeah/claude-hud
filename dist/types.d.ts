@@ -170,6 +170,7 @@ export interface RenderContext {
     config: HudConfig;
     extraLabel: string | null;
     authInfo?: AuthInfo | null;
+    sessionAddress?: string | null;
 }
 export {};
 //# sourceMappingURL=types.d.ts.map
