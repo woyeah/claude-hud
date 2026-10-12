@@ -4,6 +4,9 @@ All notable changes to Claude HUD will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- `display.showSessionAddress` option to show this session's peer-messaging name (e.g. `🔗 my-project-4b`), the address other sessions send to, resolved from the session registry in `{CLAUDE_CONFIG_DIR}/sessions/`.
+
 ### Fixed
 - A folder name containing ` │ ` no longer leaves the project link open over the rest of the HUD when line 1 wraps.
 

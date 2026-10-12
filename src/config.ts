@@ -51,6 +51,7 @@ const FIRST_LINE_SEGMENTS = [
   'project',
   'advisor',
   'sessionName',
+  'sessionAddress',
   'version',
   'extra',
   'duration',
@@ -154,6 +155,8 @@ export interface HudConfig {
     showAgents: boolean;
     showTodos: boolean;
     showSessionName: boolean;
+    // This session's peer-messaging name (the address other sessions send to).
+    showSessionAddress: boolean;
     showAuth: boolean;
     showAuthUser: boolean;
     // Max characters of the account name (0 = full).
@@ -253,6 +256,7 @@ export const DEFAULT_CONFIG: HudConfig = {
     showAgents: false,
     showTodos: false,
     showSessionName: false,
+    showSessionAddress: false,
     showAuth: false,
     showAuthUser: false,
     authUserLength: 8,

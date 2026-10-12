@@ -11,6 +11,7 @@ import { loadConfig, type HudConfig } from "./config.js";
 import { parseExtraCmdArg, runExtraCmd } from "./extra-cmd.js";
 import { getMemoryUsage } from "./memory.js";
 import { readAuthInfo } from "./auth.js";
+import { readSessionAddress } from "./session-registry.js";
 import { getCostTotals } from "./daily-cost.js";
 import { getOutputSpeed } from "./speed.js";
 import { resolveUsage, writeExternalUsageSnapshot } from "./external-usage.js";
@@ -96,6 +97,7 @@ export async function main(): Promise<void> {
       config,
       extraLabel,
       authInfo: display.showAuth || display.showAuthUser ? readAuthInfo() : null,
+      sessionAddress: display.showSessionAddress ? readSessionAddress(stdin.session_id) : null,
     });
   } catch (error) {
     console.log("[claude-hud] Error:", error instanceof Error ? error.message : "Unknown error");

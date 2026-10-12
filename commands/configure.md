@@ -33,6 +33,7 @@ Ask these with AskUserQuestion, in two batches of up to four. Put the current va
 - "Cost": `display.showCost`
 - "Duration": `display.showDuration`
 - "Session name": `display.showSessionName`
+- "Session address": `display.showSessionAddress` (peer-messaging name other sessions send to, e.g. `🔗 my-project-4b`)
 - "Reasoning effort": `display.showEffortLevel`
 
 **Usage limits** (single select)

@@ -156,6 +156,7 @@ Labels are available in English (the default), Simplified Chinese (`zh-Hans`, al
 | `display.showAgents` | boolean | false | Show agents activity line |
 | `display.showTodos` | boolean | false | Show todos progress line |
 | `display.showSessionName` | boolean | false | Show the session name: the `/rename` name, or the title Claude Code generated |
+| `display.showSessionAddress` | boolean | false | Show this session's peer-messaging name, e.g. `🔗 my-project-4b`: the address another session sends to. Read from the session registry in `{CLAUDE_CONFIG_DIR}/sessions/`; hidden when that registry has no record for the session |
 | `display.showSessionTokens` | boolean | false | Show the session's cumulative token totals, e.g. `Tokens 262k (in: 6k, out: 2k, cache: 254k)` |
 | `display.showAuth` | boolean | false | Show the auth method (subscription plan) of the current login as its own segment at the end of the first line, e.g. `Claude Max 20x`. Derived from the `oauthAccount` block in `~/.claude.json` (or `$CLAUDE_CONFIG_DIR/.claude.json` when the config directory is overridden); shows `API Key` when there is no OAuth login but `ANTHROPIC_API_KEY` is set |
 | `display.showAuthUser` | boolean | false | Show the logged-in account (email local part, falling back to profile display name) next to the auth method |

@@ -197,4 +197,7 @@ export interface RenderContext {
   config: HudConfig;
   extraLabel: string | null;
   authInfo?: AuthInfo | null;
+  // This session's peer-messaging name (see session-registry.ts). Only
+  // populated when display.showSessionAddress is enabled.
+  sessionAddress?: string | null;
 }
