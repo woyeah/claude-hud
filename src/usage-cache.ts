@@ -86,13 +86,34 @@ function toCached(percent: number | null, resetAt: Date | null, now: number): Ca
 const sameValues = (a: CachedWindow | null, b: CachedWindow | null): boolean =>
   a?.used_percentage === b?.used_percentage && a?.resets_at === b?.resets_at;
 
+// Each session reports the limits from its own last response, so an idle session
+// sends readings that are hours or days old. Usage only grows within a window, so of
+// two readings of one window the higher is the newer. Two windows reset at least a
+// window length apart, and the later reset is the newer window. Without both reset
+// times there is nothing to compare, and stdin wins.
+function newerReading(stdin: CachedWindow, cached: CachedWindow, windowMs: number): CachedWindow {
+  if (stdin.resets_at === null || cached.resets_at === null) return stdin;
+  if (Math.abs(stdin.resets_at - cached.resets_at) < windowMs / 2) {
+    return cached.used_percentage > stdin.used_percentage ? cached : stdin;
+  }
+  return cached.resets_at > stdin.resets_at ? cached : stdin;
+}
+
+function pickWindow(stdin: CachedWindow | null, cached: CachedWindow | null, windowMs: number, now: number): CachedWindow | null {
+  const live = isLive(cached, windowMs, now);
+  if (!stdin) return live;
+  return live ? newerReading(stdin, live, windowMs) : stdin;
+}
+
 /**
- * Fills the 5h and 7d windows stdin left out from the last values stdin carried.
+ * Keeps the newest 5h and 7d readings any session has seen, shared through one file.
  *
- * Claude Code does not send both windows on every refresh. Rendering only what
- * arrived makes the usage line flip between `5h` and `Weekly` from one refresh to
- * the next. Stdin always wins; a remembered window is dropped once it resets.
- * Windows that arrive on stdin are written back so the next render can use them.
+ * Claude Code does not send both windows on every refresh, and an idle session keeps
+ * sending the readings of its last response. Rendering only what arrived makes the
+ * usage line flip between `5h` and `Weekly` and lets an idle session pull the shared
+ * values back down. Each window shows the newest reading of stdin and the cache; a
+ * remembered window is dropped once it resets. Newer readings from stdin are written
+ * back so the next render, in any session, can use them.
  */
 export function withLastKnownUsage(
   stdinUsage: UsageData | null,
@@ -104,16 +125,17 @@ export function withLastKnownUsage(
   const stdinFiveHour = toCached(stdinUsage?.fiveHour ?? null, stdinUsage?.fiveHourResetAt ?? null, now);
   const stdinSevenDay = toCached(stdinUsage?.sevenDay ?? null, stdinUsage?.sevenDayResetAt ?? null, now);
 
+  const fiveHour = pickWindow(stdinFiveHour, cached.five_hour, FIVE_HOUR_WINDOW_MS, now);
+  const sevenDay = pickWindow(stdinSevenDay, cached.seven_day, SEVEN_DAY_WINDOW_MS, now);
+
   const next: UsageCache = {
-    five_hour: stdinFiveHour ?? cached.five_hour,
-    seven_day: stdinSevenDay ?? cached.seven_day,
+    five_hour: fiveHour ?? cached.five_hour,
+    seven_day: sevenDay ?? cached.seven_day,
   };
   if (stdinUsage && (!sameValues(next.five_hour, cached.five_hour) || !sameValues(next.seven_day, cached.seven_day))) {
     writeCache(file, next);
   }
 
-  const fiveHour = stdinFiveHour ?? isLive(cached.five_hour, FIVE_HOUR_WINDOW_MS, now);
-  const sevenDay = stdinSevenDay ?? isLive(cached.seven_day, SEVEN_DAY_WINDOW_MS, now);
   if (!fiveHour && !sevenDay) {
     return stdinUsage;
   }

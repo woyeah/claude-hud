@@ -94,11 +94,36 @@ test('withLastKnownUsage bounds a window without a reset time by its length', as
   });
 });
 
-test('withLastKnownUsage lets stdin win over the cache even when its reset time is past', async () => {
+test('withLastKnownUsage keeps the higher reading of one window over an idle session\'s older one', async () => {
+  await withTempHome(async (home) => {
+    const file = getUsageCachePath(home);
+    withLastKnownUsage(usage(), NOW, home);
+    const written = await readFile(file, 'utf8');
+
+    // An idle session: its 5h window is gone and its weekly reading is days old.
+    const idle = usage({ fiveHour: null, fiveHourResetAt: null, sevenDay: 8 });
+    assert.deepEqual(withLastKnownUsage(idle, NOW + HOUR, home), usage());
+    assert.equal(await readFile(file, 'utf8'), written);
+  });
+});
+
+test('withLastKnownUsage keeps the newer window over a reading from the window before it', async () => {
   await withTempHome(async (home) => {
     withLastKnownUsage(usage(), NOW, home);
-    const stale = usage({ fiveHour: 7, fiveHourResetAt: new Date(NOW - 1) });
-    assert.deepEqual(withLastKnownUsage(stale, NOW, home), stale);
+
+    const lastWindow = usage({ fiveHour: 90, fiveHourResetAt: new Date(NOW - 3 * HOUR) });
+    assert.deepEqual(withLastKnownUsage(lastWindow, NOW, home), usage());
+
+    const nextWeek = usage({ sevenDay: 2, sevenDayResetAt: new Date(NOW + 10 * DAY) });
+    assert.deepEqual(withLastKnownUsage(nextWeek, NOW, home), nextWeek);
+  });
+});
+
+test('withLastKnownUsage lets stdin win when a reading has no reset time to compare', async () => {
+  await withTempHome(async (home) => {
+    withLastKnownUsage(usage(), NOW, home);
+    const lower = usage({ fiveHour: 7, fiveHourResetAt: null });
+    assert.deepEqual(withLastKnownUsage(lower, NOW, home), lower);
   });
 });
 
