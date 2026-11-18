@@ -14,6 +14,7 @@ import { readSessionAddress } from "./session-registry.ts";
 import { getCostTotals } from "./daily-cost.ts";
 import { getOutputSpeed } from "./speed.ts";
 import { externalUsageSnapshot, resolveUsage, type UsageTarget } from "./external-usage.ts";
+import { withLastKnownUsage } from "./usage-cache.ts";
 import { getTerminalWidth } from "./utils/terminal.ts";
 import { truncateToWidth, visibleWidth } from "./render/ansi.ts";
 import { setLanguage, t } from "./i18n/index.ts";
@@ -86,7 +87,11 @@ export async function renderStdin(stdin: StdinData, config: HudConfig, { ask, fi
     resolveVcsStatus(config, ask, stdin.cwd, stdin.workspace?.repo),
   ]);
 
-  const usageData = display.showUsage ? resolveUsage(config, stdinUsage, answers["usage.read"], now) : null;
+  // Claude Code does not send both rate-limit windows on every refresh, and an idle session
+  // keeps sending old readings; data/usage-cache.json keeps the newest of each window. Only
+  // real sessions (ones with a transcript) read or write it, never a preview.
+  const knownUsage = display.showUsage && files && paths.transcript ? withLastKnownUsage(stdinUsage, now, dataDir) : stdinUsage;
+  const usageData = display.showUsage ? resolveUsage(config, knownUsage, answers["usage.read"], now) : null;
   const lines = renderLines({
     stdin,
     transcript,

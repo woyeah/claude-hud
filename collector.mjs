@@ -94,7 +94,7 @@ export function readGrants(root, named) {
 
 // ---- data/: the one directory logic may write.
 
-const MOVED_INTO_DATA = ['daily-cost.json', 'speed-cache', 'transcript-cursors'];
+const MOVED_INTO_DATA = ['daily-cost.json', 'speed-cache', 'transcript-cursors', 'usage-cache.json'];
 
 /** Creates data/, moves state from older releases into it, and removes any symlink inside it. Returns its real path. */
 export function prepareDataDir({ hudDir, dataDir }) {
