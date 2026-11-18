@@ -8,7 +8,7 @@ import { cacheHitRateLine, promptCacheLine, sessionTimeLine } from './lines.ts';
 import { orderParts } from './order.ts';
 import {
   advisorPart, authPart, compactionsPart, configCountParts, costPart, customLinePart, durationPart, extraPart,
-  modelBadge, projectParts, sessionNamePart, sessionTokensSummary, speedPart, versionPart, type Part,
+  modelBadge, projectParts, sessionAddressPart, sessionNamePart, sessionTokensSummary, speedPart, versionPart, type Part,
 } from './parts.ts';
 import { usageParts } from './usage.ts';
 
@@ -30,6 +30,7 @@ function sessionLine(f: Frame): string {
   add(modelCluster(f), 'model');
   for (const part of projectParts(f, 'compact')) add(part, 'project');
   add(sessionNamePart(f), 'sessionName');
+  add(sessionAddressPart(f), 'sessionAddress');
   add(versionPart(f), 'version');
   configCountParts(f).forEach((part) => add(part));
   (usageParts(f, 'compact') ?? []).forEach((part) => add(part));

@@ -150,6 +150,12 @@ export function sessionNamePart(f: Frame): string | null {
   return f.config?.display?.showSessionName ? labeled(f, sessionName(f)) : null;
 }
 
+// Peer-messaging name: the address another session sends to. Distinct from the
+// session name above, which is only a human label for this session.
+export function sessionAddressPart(f: Frame): string | null {
+  return f.config?.display?.showSessionAddress && f.sessionAddress ? labeled(f, `🔗 ${f.sessionAddress}`) : null;
+}
+
 export function versionPart(f: Frame): string | null {
   const version = f.config?.display?.showClaudeCodeVersion ? claudeCodeVersion(f) : undefined;
   return labeled(f, version && `CC v${version}`);

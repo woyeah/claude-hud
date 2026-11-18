@@ -54,6 +54,7 @@ const FIRST_LINE_SEGMENTS = [
   'project',
   'advisor',
   'sessionName',
+  'sessionAddress',
   'version',
   'extra',
   'duration',
@@ -163,6 +164,9 @@ export interface HudConfig {
     showAgents: boolean;
     showTodos: boolean;
     showSessionName: boolean;
+    // Show this session's peer-messaging name, the address other sessions
+    // reach it at, resolved from the session registry. Default off.
+    showSessionAddress: boolean;
     showAuth: boolean;
     showAuthUser: boolean;
     // Show the whole email address instead of its local part.
@@ -267,6 +271,7 @@ export const DEFAULT_CONFIG: HudConfig = {
     showAgents: false,
     showTodos: false,
     showSessionName: false,
+    showSessionAddress: false,
     showAuth: false,
     showAuthUser: false,
     authUserFullEmail: false,

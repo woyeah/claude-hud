@@ -76,6 +76,8 @@ export function logicPaths(paths, input) {
   return {
     data: paths.dataDir, config: paths.configPath, override: paths.overridePath, heartbeat: paths.heartbeat, claudeJson: paths.claudeJson,
     user, project, transcript,
+    // Claude Code's session registry (<pid>.json per running session), read for display.showSessionAddress.
+    sessions: path.join(paths.configDir, 'sessions'),
     subagents: transcript && path.join(path.dirname(transcript), path.basename(transcript, '.jsonl'), 'subagents'),
   };
 }

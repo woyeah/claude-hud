@@ -9,7 +9,7 @@ import { addedDirsLine, cacheHitRateLine, environmentLine, memoryLine, promptCac
 import { orderParts } from './order.ts';
 import {
   advisorPart, authPart, compactionsPart, costPart, customLinePart, durationPart, extraPart, modelBadge,
-  projectParts, sessionNamePart, sessionTokensSummary, speedPart, versionPart, type Part,
+  projectParts, sessionAddressPart, sessionNamePart, sessionTokensSummary, speedPart, versionPart, type Part,
 } from './parts.ts';
 import { usageParts } from './usage.ts';
 import { gitFilesLine } from './vcs.ts';
@@ -32,6 +32,7 @@ function projectLine(f: Frame): string | null {
   for (const part of projectParts(f, 'expanded')) add(part, 'project');
   add(advisorPart(f), 'advisor');
   add(sessionNamePart(f), 'sessionName');
+  add(sessionAddressPart(f), 'sessionAddress');
   add(versionPart(f), 'version');
   add(extraPart(f), 'extra');
   add(durationPart(f), 'duration');

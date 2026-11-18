@@ -76,6 +76,7 @@ export const DESCRIPTIONS: Record<string, string> = {
   "display.showAgents": "Show agents activity line",
   "display.showTodos": "Show todos progress line",
   "display.showSessionName": "Show the session name: the `/rename` name, or the title Claude Code generated",
+  "display.showSessionAddress": "Show this session's peer-messaging name, the address other sessions send to (what `ListAgents` prints), e.g. `🔗 my-project-4b`. Read from Claude Code's session registry; hidden when it has no record for this session",
   "display.showSessionTokens": "Show the session's cumulative token totals, e.g. `Tokens 262k (in: 6k, out: 2k, cache: 254k)`",
   "display.showAuth": "Show the auth method (subscription plan) of the current login as its own segment at the end of the first line, e.g. `Claude Max 20x`. Derived from the `oauthAccount` block in `~/.claude.json` (or `$CLAUDE_CONFIG_DIR/.claude.json` when the config directory is overridden); shows `API Key` when there is no OAuth login but `ANTHROPIC_API_KEY` is set",
   "display.showAuthUser": "Show the logged-in account (email local part, falling back to profile display name) next to the auth method",

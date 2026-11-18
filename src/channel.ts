@@ -29,6 +29,8 @@ export interface Paths {
   } | null;
   transcript: string | null;
   subagents: string | null;
+  /** Claude Code's session registry directory; optional so older inputs still type-check. */
+  sessions?: string;
 }
 
 export interface Input {

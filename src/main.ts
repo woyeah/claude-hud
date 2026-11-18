@@ -10,6 +10,7 @@ import { loadConfigFiles, type HudConfig } from "./config.ts";
 import { extraCmdLabel } from "./extra-cmd.ts";
 import { getMemoryUsage, readMemory, type MemoryFacts } from "./memory.ts";
 import { readAuthInfo } from "./auth.ts";
+import { readSessionAddress } from "./session-registry.ts";
 import { getCostTotals } from "./daily-cost.ts";
 import { getOutputSpeed } from "./speed.ts";
 import { externalUsageSnapshot, resolveUsage, type UsageTarget } from "./external-usage.ts";
@@ -101,6 +102,7 @@ export async function renderStdin(stdin: StdinData, config: HudConfig, { ask, fi
     config,
     extraLabel: extraCmdLabel(answers.extra),
     authInfo: files && (display.showAuth || display.showAuthUser) ? readAuthInfo(paths.claudeJson) : null,
+    sessionAddress: files && display.showSessionAddress ? readSessionAddress(stdin.session_id, paths.sessions) : null,
   }, columns, now);
   const snapshot = externalUsageSnapshot(answers["usage.target"] as UsageTarget, stdinUsage, now);
   return snapshot ? { lines, snapshot } : { lines };
